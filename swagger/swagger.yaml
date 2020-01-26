@@ -1,0 +1,43 @@
+openapi: 3.0.0
+info:
+  title: 'API Tutoriel'
+  version: '0.1'
+servers:
+  -
+    url: 'http://api.tutoriel.fr/v1'
+    description: 'Mon api'
+paths:
+  /posts:
+    get:
+      operationId: 'App\Controller\BlogController::index'
+      responses:
+        '200':
+          description: 'Nos poissons'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+components:
+  schemas:
+    Post:
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+          nullable: true
+        espece:
+          type: string
+          nullable: true
+        taille:
+          type: integer
+          nullable: true
+        poids:
+          type: integer
+          nullable: true
+        lieu:
+          type: string
+          nullable: true
+      type: object
