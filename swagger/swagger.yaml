@@ -1,24 +1,78 @@
 openapi: 3.0.0
 info:
-  title: 'API Tutoriel'
+  title: API
   version: '0.1'
 servers:
   -
     url: 'http://api.tutoriel.fr/v1'
-    description: 'Mon api'
+    description: 'Notre api'
 paths:
-  /posts:
+  /peche/name:
     get:
       operationId: 'App\Controller\BlogController::index'
       responses:
         '200':
-          description: 'Nos poissons'
+          description: 'Carnet de pêche'
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Post'
+  /peche/name/add:
+    post:
+      operationId: 'App\Controller\BlogController::show'
+      parameters:
+        -
+          name: nom
+          in: path
+          description: 'Ajout d''un nouveau poisson'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Le poisson'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+  /peche/name/update:
+    put:
+      operationId: 'App\Controller\BlogController::show2'
+      parameters:
+        -
+          name: ajout
+          in: path
+          description: 'Mise à jour des informations de votre poisson'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Le poisson'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+  /peche/name/delete:
+    delete:
+      operationId: 'App\Controller\BlogController::show3'
+      parameters:
+        -
+          name: supression
+          in: path
+          description: 'Supression d''un poisson'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Le poisson'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
 components:
   schemas:
     Post:
