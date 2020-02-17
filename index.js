@@ -73,45 +73,97 @@
 // app.listen(console.log(`Ecoute sur le port : ${port}`)) 
 
 
-const express = require("express");
-const bodyParser = require("body-parser");
+// const express = require("express");
+// const bodyParser = require("body-parser");
+// const app = express();
+
+// //jwt stuff
+// const jwt = require("jsonwebtoken");
+
+// //passport stuff
+// const passport = require("passport");
+// const jwtStrategry  = require("./config/jwt")
+// passport.use(jwtStrategry);
+
+// app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(bodyParser.json())
+
+// app.get("/", (req, res) => {
+//     res.send("hello express server")
+// })
+
+// app.post("/login", (req, res) => {
+//     let { email, password } = req.body;
+//     //This lookup would normally be done using a database
+//     if (email === "") {
+//         if (password === "") { //the password compare would normally be done using bcrypt.
+//             const opts = {}
+//             opts.expiresIn = 120;  //token expires in 2min
+//             const secret = "SECRET_KEY" //normally stored in process.env.secret
+//             const token = jwt.sign({ email }, secret, opts);
+//             return res.status(200).json({
+//                 message: "Auth Passed",
+//                 token
+//             })
+//         }
+//     }
+//     return res.status(401).json({ message: "Auth Failed" })
+// });
+
+// app.get("/protected", passport.authenticate('jwt', { session: false }), (req, res) => {
+//     return res.status(200).send("YAY! this is a protected Route")
+// })
+
+// app.listen(3001);
+
+
+
+const passport = require('passport');
+var express = require('express'); 
 const app = express();
+app.use(passport.initialize());
+app.use(passport.session());
 
-//jwt stuff
-const jwt = require("jsonwebtoken");
+app.get('/success', (req, res) => res.send("Welcome "+req.query.username+"!!"));
+app.get('/error', (req, res) => res.send("error logging in"));
 
-//passport stuff
-const passport = require("passport");
-const jwtStrategry  = require("./config/jwt")
-passport.use(jwtStrategry);
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
-app.get("/", (req, res) => {
-    res.send("hello express server")
-})
-
-app.post("/login", (req, res) => {
-    let { email, password } = req.body;
-    //This lookup would normally be done using a database
-    if (email === "") {
-        if (password === "") { //the password compare would normally be done using bcrypt.
-            const opts = {}
-            opts.expiresIn = 120;  //token expires in 2min
-            const secret = "SECRET_KEY" //normally stored in process.env.secret
-            const token = jwt.sign({ email }, secret, opts);
-            return res.status(200).json({
-                message: "Auth Passed",
-                token
-            })
-        }
-    }
-    return res.status(401).json({ message: "Auth Failed" })
+passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
 });
 
-app.get("/protected", passport.authenticate('jwt', { session: false }), (req, res) => {
-    return res.status(200).send("YAY! this is a protected Route")
-})
+passport.deserializeUser(function(id, cb) {
+  User.findById(id, function(err, user) {
+    cb(err, user);
+  });
+});
 
-app.listen(3001);
+/* PASSPORT LOCAL AUTHENTICATION */
+
+const LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+      UserDetails.findOne({
+        username: username
+      }, function(err, user) {
+        if (err) {
+          return done(err);
+        }
+
+        if (!user) {
+          return done(null, false);
+        }
+
+        if (user.password != password) {
+          return done(null, false);
+        }
+        return done(null, user);
+      });
+  }
+));
+
+app.post('/',
+  passport.authenticate('local', { failureRedirect: '/error' }),
+  function(req, res) {
+    res.redirect('/success?username='+req.user.username);
+  });
