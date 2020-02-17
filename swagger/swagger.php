@@ -8,6 +8,9 @@ Use OpenApi\Annotations as OA;
  * @OA\Server(
  *      url="http://api.tutoriel.fr/v1",
  *      description="Notre api"
+ * 
+ *      ./vendor/bin/openapi --format yaml --output ./swagger/swagger.yaml ./swagger/swagger.php src
+ * 
  * )
  */
 
