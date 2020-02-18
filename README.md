@@ -13,7 +13,17 @@ git clone git@github.com:Guillaume-ANTON/projet-poisson.git
 ```
 cd projet-poisson
 ```
+```
+npm install
+```
 2 - Lancer le serveur 
 ```
 npm start
 ```
+3 - Utilisation de l'api
+
+Accéder à la doc : 
+
+Une fois le projet lancé il suffit d'aller sur la route /documentation
+
+Florian LYS et Guillaume ANTON
