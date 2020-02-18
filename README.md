@@ -1,10 +1,8 @@
 # Projet Dev-Back ANTON LYS
 
 ## 1. Explication du projet
-
-Le but du projet est de créer une api seulement accessible par le biais de requêtes ( postman par exemple ).
-
-Nous avons choisit de créer une application de pêche qui permet à un utilisateur de pouvoir référencer ses poissons.
+Dans le cadre du projet de DevBack, nous avons décidé de créer un gestionnaire de poissons.
+Pour ce projet nous avons décidé d'utilisé StrApi qui nous à crée les routes ainsi que le doc Swagger.
 ## 2. Installation du projet 
 
 1 - Cloner le repo sur sa machine : 
@@ -17,5 +15,5 @@ cd projet-poisson
 ```
 2 - Lancer le serveur 
 ```
-node index.js
+npm start
 ```
